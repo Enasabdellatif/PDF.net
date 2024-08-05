@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "9F1bLZwGe5vGALCGvqNOv7rlGF9rIhSbR0VaUtMcGk4=",
+  "Source": "RestaurantBookingReport",
+  "BasePath": "_content/RestaurantBookingReport",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
