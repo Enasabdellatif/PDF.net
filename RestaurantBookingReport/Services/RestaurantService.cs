@@ -29,17 +29,22 @@ namespace RestaurantBookingReport.Services
                 report.RestaurantTitle = (await cmd.ExecuteScalarAsync())?.ToString();
 
                 // Fetch total reservations and pax
-                cmd = new MySqlCommand("SELECT COUNT(dt) as Total_res FROM restaurantbooking_bookings WHERE restaurant_id = @restaurantId AND status = 'Confirmed' AND DATE(dt) = @date", conn);
+                cmd = new MySqlCommand("SELECT COUNT(dt) as Total_res FROM restaurantbooking_bookings WHERE restaurant_id = @restaurantId AND status = 'Confirmed' AND DATE(created) = @date", conn);
                 cmd.Parameters.AddWithValue("@restaurantId", restaurantId);
                 cmd.Parameters.AddWithValue("@date", date);
-                report.TotalReservations = Convert.ToInt32(await cmd.ExecuteScalarAsync());
+                var totalReservationsResult = await cmd.ExecuteScalarAsync();
+                report.TotalReservations = totalReservationsResult != DBNull.Value ? Convert.ToInt32(totalReservationsResult) : 0;
 
-                cmd = new MySqlCommand("SELECT SUM(people) as Total_people FROM restaurantbooking_bookings WHERE restaurant_id = @restaurantId AND status = 'Confirmed' AND DATE(dt) = @date", conn);
+                cmd = new MySqlCommand("SELECT SUM(people) as Total_people FROM restaurantbooking_bookings WHERE restaurant_id = @restaurantId AND status = 'Confirmed' AND DATE(created) = @date", conn);
                 cmd.Parameters.AddWithValue("@restaurantId", restaurantId);
-                report.TotalPax = Convert.ToInt32(await cmd.ExecuteScalarAsync());
+                cmd.Parameters.AddWithValue("@date", date);
+                var totalPaxResult = await cmd.ExecuteScalarAsync();
+                report.TotalPax = totalPaxResult != DBNull.Value ? Convert.ToInt32(totalPaxResult) : 0;
 
                 // Fetch seat times
-                cmd = new MySqlCommand("SELECT DISTINCT TIME(dt) as times FROM restaurantbooking_bookings WHERE restaurant_id = @restaurantId AND status = 'Confirmed' AND DATE(dt) = @date ORDER BY TIME(dt) ASC", conn);
+                cmd = new MySqlCommand("SELECT DISTINCT TIME(dt) as times FROM restaurantbooking_bookings WHERE restaurant_id = @restaurantId AND status = 'Confirmed' AND DATE(created) = @date ORDER BY TIME(created) ASC", conn);
+                cmd.Parameters.AddWithValue("@restaurantId", restaurantId);
+                cmd.Parameters.AddWithValue("@date", date);
                 using (var reader = await cmd.ExecuteReaderAsync())
                 {
                     while (await reader.ReadAsync())
@@ -51,7 +56,7 @@ namespace RestaurantBookingReport.Services
                 // Fetch seat data
                 foreach (var seat in report.SeatData)
                 {
-                    cmd = new MySqlCommand("SELECT COUNT(dt) as Total_res, SUM(people) as Total_people FROM restaurantbooking_bookings WHERE restaurant_id = @restaurantId AND TIME(dt) = @time AND status = 'Confirmed' AND DATE(dt) = @date", conn);
+                    cmd = new MySqlCommand("SELECT COUNT(created) as Total_res, SUM(people) as Total_people FROM restaurantbooking_bookings WHERE restaurant_id = @restaurantId AND TIME(created) = @time AND status = 'Confirmed' AND DATE(created) = @date", conn);
                     cmd.Parameters.AddWithValue("@restaurantId", restaurantId);
                     cmd.Parameters.AddWithValue("@time", seat.Time);
                     cmd.Parameters.AddWithValue("@date", date);
@@ -59,13 +64,13 @@ namespace RestaurantBookingReport.Services
                     {
                         if (await reader.ReadAsync())
                         {
-                            seat.TotalReservations = Convert.ToInt32(reader["Total_res"]);
-                            seat.TotalPeople = Convert.ToInt32(reader["Total_people"]);
+                            seat.TotalReservations = reader["Total_res"] != DBNull.Value ? Convert.ToInt32(reader["Total_res"]) : 0;
+                            seat.TotalPeople = reader["Total_people"] != DBNull.Value ? Convert.ToInt32(reader["Total_people"]) : 0;
                         }
                     }
 
                     // Fetch individual bookings for each seat time
-                    cmd = new MySqlCommand("SELECT DATE_FORMAT(created, '%d %b %y %h:%i:%s %p') as created, c_lname, c_room, people, c_events, c_vip, c_notes, c_kids FROM restaurantbooking_bookings WHERE restaurant_id = @restaurantId AND status = 'Confirmed' AND TIME(dt) = @time AND DATE(dt) = @date ORDER BY TIME(dt)", conn);
+                    cmd = new MySqlCommand("SELECT DATE_FORMAT(created, '%d %b %y %h:%i:%s %p') as created, c_lname, c_room, people, c_events, c_vip, c_notes, c_kids FROM restaurantbooking_bookings WHERE restaurant_id = @restaurantId AND status = 'Confirmed' AND TIME(created) = @time AND DATE(created) = @date ORDER BY TIME(created)", conn);
                     cmd.Parameters.AddWithValue("@restaurantId", restaurantId);
                     cmd.Parameters.AddWithValue("@time", seat.Time);
                     cmd.Parameters.AddWithValue("@date", date);
@@ -78,11 +83,11 @@ namespace RestaurantBookingReport.Services
                                 Created = reader["created"].ToString(),
                                 LastName = reader["c_lname"].ToString(),
                                 Room = reader["c_room"].ToString(),
-                                People = Convert.ToInt32(reader["people"]),
+                                People = reader["people"] != DBNull.Value ? Convert.ToInt32(reader["people"]) : 0,
                                 Events = reader["c_events"].ToString(),
                                 VIP = reader["c_vip"].ToString(),
                                 Notes = reader["c_notes"].ToString(),
-                                Kids = Convert.ToInt32(reader["c_kids"])
+                                Kids = reader["c_kids"] != DBNull.Value ? Convert.ToInt32(reader["c_kids"]) : 0
                             });
                         }
                     }

@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\RestaurantBookingReport",
+    "\\RestaurantBookingReport\\bin"
   ],
-  "SelectedNode": "\\RestaurantBookingReport.sln",
+  "SelectedNode": "\\RestaurantBookingReport\\RestaurantBookingReport.csproj.user",
   "PreviewInSolutionExplorer": false
 }

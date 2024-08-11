@@ -12,7 +12,7 @@ namespace RestaurantBookingReport.Services
 {
     public class PdfService
     {
-        public MemoryStream GeneratePdf(RestaurantReport report)
+        public MemoryStream GeneratePdf(RestaurantReport report,DateTime Date)
         {
             var stream = new MemoryStream();
             var writer = new PdfWriter(stream);
@@ -25,7 +25,7 @@ namespace RestaurantBookingReport.Services
                 .SetFontSize(20)
                 .SetTextAlignment(TextAlignment.CENTER));
 
-            document.Add(new Paragraph($"Report Date: {DateTime.Now.ToString("MM/dd/yyyy")}").SetTextAlignment(TextAlignment.LEFT));
+            document.Add(new Paragraph($"Report Date: {Date.ToString("MM/dd/yyyy")}").SetTextAlignment(TextAlignment.LEFT));
 
             document.Add(new LineSeparator(new SolidLine()));
 

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\dev-02\\Source\\Repos\\PDF.net\\RestaurantBookingReport\\RestaurantBookingReport.csproj": {}
+    "C:\\Users\\dev-02\\source\\repos\\PDF.net\\RestaurantBookingReport\\RestaurantBookingReport.csproj": {}
   },
   "projects": {
-    "C:\\Users\\dev-02\\Source\\Repos\\PDF.net\\RestaurantBookingReport\\RestaurantBookingReport.csproj": {
+    "C:\\Users\\dev-02\\source\\repos\\PDF.net\\RestaurantBookingReport\\RestaurantBookingReport.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dev-02\\Source\\Repos\\PDF.net\\RestaurantBookingReport\\RestaurantBookingReport.csproj",
+        "projectUniqueName": "C:\\Users\\dev-02\\source\\repos\\PDF.net\\RestaurantBookingReport\\RestaurantBookingReport.csproj",
         "projectName": "RestaurantBookingReport",
-        "projectPath": "C:\\Users\\dev-02\\Source\\Repos\\PDF.net\\RestaurantBookingReport\\RestaurantBookingReport.csproj",
+        "projectPath": "C:\\Users\\dev-02\\source\\repos\\PDF.net\\RestaurantBookingReport\\RestaurantBookingReport.csproj",
         "packagesPath": "C:\\Users\\dev-02\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dev-02\\Source\\Repos\\PDF.net\\RestaurantBookingReport\\obj\\",
+        "outputPath": "C:\\Users\\dev-02\\source\\repos\\PDF.net\\RestaurantBookingReport\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

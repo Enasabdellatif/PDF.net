@@ -25,7 +25,7 @@ namespace RestaurantBookingReport.Controllers
             try
             {
                 var report = await _restaurantService.GetRestaurantReportAsync(request.RestaurantId, request.Date);
-                var pdfStream = _pdfService.GeneratePdf(report);
+                var pdfStream = _pdfService.GeneratePdf(report, request.Date);
 
                 return File(pdfStream.ToArray(), "application/pdf", "report.pdf");
             }
